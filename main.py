@@ -1,6 +1,6 @@
 import os
 import yaml
-from crawlers import interparkCrawler
+from crawlers import InterparkCrawler, SteamCrawler
 import pandas as pd
 import time
 import datetime
@@ -13,13 +13,13 @@ class Main:
     def __init__(self):
         with open(os.path.join(PROJECT_ROOT_PATH, 'config', 'config.yaml')) as f:
             self.config = yaml.load(f, Loader=yaml.FullLoader)
-        self.driver_path = os.path.join(r'C:\Users\LIMKARAM\PycharmProjects\ReviewCollector\chromedriver.exe')
+        self.driver_path = self.config['chromedriver_path']
 
     def interpark_crawling(self):
         for hotel, url in self.config['interpark'].items():
             print(f'[{hotel}] crawling start!!!')
             df_info = pd.DataFrame()
-            crawler = interparkCrawler.Crawler(wait_time=3)
+            crawler = InterparkCrawler.Crawler(wait_time=3)
             crawler.open(url=url, driver_path=self.driver_path)
             crawler.click_pagemovebar(point='left')
 
@@ -37,7 +37,27 @@ class Main:
             present_date = datetime.datetime.now().strftime('%Y%m%d')
             df_info.to_csv(os.path.join('outputs', f'interpark_{hotel}_{present_date}.csv'), index=False)
 
+    def steam_crawling(self):
+        url = self.config['steam']['battlegrounds']
+        crawler = SteamCrawler.Crawler(driver_path=self.driver_path)
+        crawler.open(url=url)
+        crawler.infinity_scroll_down()
+        crawler.click_all_reviews()
+        crawler.click_view_alert_page()
+        crawler.select_language(language='korean')
+        # crawler.infinity_scroll_down()
+        crawler.scroll_down(scroll_down=10000)
+        data = crawler.get_info()
+        df = pd.DataFrame(data)
+        print(df.head())
+        print('')
+        print(df.info())
+        present_date = datetime.datetime.now().strftime('%Y%m%d')
+        df.to_csv(os.path.join('outputs', f'steam_battlegrounds_{present_date}.csv'), index=False)
+        time.sleep(60)
+
 
 if __name__ == '__main__':
     excute = Main()
-    excute.interpark_crawling()
+    # excute.interpark_crawling()
+    excute.steam_crawling()
