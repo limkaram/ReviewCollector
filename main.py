@@ -2,6 +2,7 @@ import os
 import yaml
 from crawlers import InterparkCrawler, SteamCrawler
 import pandas as pd
+import numpy as np
 import time
 import datetime
 
@@ -18,17 +19,23 @@ class Main:
     def interpark_crawling(self):
         for hotel, url in self.config['interpark'].items():
             print(f'[{hotel}] crawling start!!!')
-            df_info = pd.DataFrame()
             crawler = InterparkCrawler.Crawler(wait_time=3)
             crawler.open(url=url, driver_path=self.driver_path)
             crawler.click_pagemovebar(point='left')
+
+            df_info = pd.DataFrame()
+            all_reviews_num = crawler.all_reviews_num
+            complete_reviews_num = 0
 
             for page in crawler.get_pages_list():
                 if page > 1:
                     crawler.click_page(page)
                 time.sleep(1)
                 info = crawler.get_info(wait=False)
-                print(f'[page {page}]')
+                complete_reviews_num += len(info['review'])
+                processing_ratio = 100 * (complete_reviews_num / all_reviews_num)
+
+                print(f'[page {page}] [{complete_reviews_num}/{all_reviews_num}({processing_ratio:.1f}%)]')
                 print(info['date'], '\n', info['score'], '\n', info['score_category'], '\n', info['review'], '\n')
                 df_info = df_info.append(pd.DataFrame(info))
             crawler.quit()
@@ -59,5 +66,5 @@ class Main:
 
 if __name__ == '__main__':
     excute = Main()
-    # excute.interpark_crawling()
-    excute.steam_crawling()
+    excute.interpark_crawling()
+    # excute.steam_crawling()

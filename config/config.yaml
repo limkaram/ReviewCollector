@@ -1,8 +1,10 @@
-chromedriver_path: "/Users/limkaram/PycharmProjects/ReviewCrawler/chromedriver"
+chromedriver_path: "/Users/macrent/PycharmProject/ReviewCrawler/chromedriver"
 chrome_path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 
 interpark:
-  annex: https://travel.interpark.com/checkinnow/goods/GIM015000462?startdate=20210817&enddate=20210818&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
-  podo: https://travel.interpark.com/checkinnow/goods/GIM013000574?startdate=20210913&enddate=20210914&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
+#  jeju_shilla: https://travel.interpark.com/checkinnow/goods/GIM000041892?startdate=20220105&enddate=20220106&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
+  jeju_lotte: https://travel.interpark.com/checkinnow/goods/GIM009000092?startdate=20220104&enddate=20220105&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
+#  annex: https://travel.interpark.com/checkinnow/goods/GIM015000462?startdate=20210817&enddate=20210818&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
+#  podo: https://travel.interpark.com/checkinnow/goods/GIM013000574?startdate=20210913&enddate=20210914&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
 steam:
   battlegrounds: https://store.steampowered.com/app/578080/PUBG_BATTLEGROUNDS/

@@ -19,12 +19,17 @@ class Crawler:
         self.wait_time = wait_time
 
     def open(self, url: str, driver_path: str):
-        subprocess.Popen(r'{} --remote-debugging-port=9222 --user-data-dir="C:\chrometemp"'.format(self.chrome_path))
-        option = Options()
-        option.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-        self.driver = webdriver.Chrome(driver_path, options=option)
+        # subprocess.Popen(r'{} --remote-debugging-port=9222 --user-data-dir="C:\chrometemp"'.format(self.chrome_path))
+        # option = Options()
+        # option.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+        self.driver = webdriver.Chrome(driver_path)
+        # self.driver = webdriver.Chrome(driver_path, options=option)  # 옵션 있는 경우
         self.wait = WebDriverWait(self.driver, self.wait_time)
         self.driver.get(url)
+
+    @property
+    def all_reviews_num(self):
+        return int(self.wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/section/div/section/div[1]/div[2]/div[1]/h4/span'))).text)
 
     def get_info(self, wait: bool):
         if not wait:
