@@ -5,12 +5,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from crawlers.utils import get_datefmt_text, check_contain_datefmt_text
 import subprocess
 import yaml
 import os
 import re
-import time
+import platform
 
 
 class Crawler:
@@ -23,11 +22,15 @@ class Crawler:
         self.wait_time = wait_time
 
     def open(self, url: str, driver_path: str):
-        # subprocess.Popen(r'{} --remote-debugging-port=9222 --user-data-dir="C:\chrometemp"'.format(self.chrome_path))
-        # option = Options()
-        # option.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-        self.driver = webdriver.Chrome(driver_path)
-        # self.driver = webdriver.Chrome(driver_path, options=option)  # 옵션 있는 경우
+        if platform.system().lower().startswith('window'):
+            subprocess.Popen(
+                r'{} --remote-debugging-port=9222 --user-data-dir="C:\chrometemp"'.format(self.chrome_path))
+            option = Options()
+            option.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+            self.driver = webdriver.Chrome(driver_path, options=option)
+        else:
+            self.driver = webdriver.Chrome(driver_path)
+
         self.wait = WebDriverWait(self.driver, self.wait_time)
         self.driver.get(url)
 

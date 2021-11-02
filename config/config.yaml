@@ -1,4 +1,4 @@
-chromedriver_path: "/Users/limkaram/PycharmProject/ReviewCrawler/chromedriver"
+chromedriver_path: /Users/limkaram/PycharmProject/ReviewCrawler/chromedriver
 chrome_path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 
 interpark:
@@ -25,3 +25,5 @@ tripadvisor:
   ramada_plaza: https://www.tripadvisor.co.kr/Hotel_Review-g297885-d306058-Reviews-Ramada_Plaza_Jeju-Jeju_Jeju_Island.html
   lotte_city: https://www.tripadvisor.co.kr/Hotel_Review-g297885-d6375295-Reviews-Lotte_City_Hotels_Jeju-Jeju_Jeju_Island.html
   shilla_stay: https://www.tripadvisor.co.kr/Hotel_Review-g297885-d7679225-Reviews-Shilla_Stay_Jeju-Jeju_Jeju_Island.html
+google_store:
+  instagram: https://play.google.com/store/apps/details?id=com.instagram.android

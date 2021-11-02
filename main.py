@@ -1,6 +1,6 @@
 import os
 import yaml
-from crawlers import InterparkCrawler, TripadvisorCrawler, SteamCrawler
+from crawlers import InterparkCrawler, TripadvisorCrawler, SteamCrawler, GoogleStoreCrawler
 import pandas as pd
 import time
 import datetime
@@ -45,8 +45,8 @@ class Main:
 
     def steam_crawling(self):
         url = self.config['steam']['battlegrounds']
-        crawler = SteamCrawler.Crawler(driver_path=self.driver_path)
-        crawler.open(url=url)
+        crawler = SteamCrawler.Crawler()
+        crawler.open(url=url, driver_path=self.driver_path)
         crawler.infinity_scroll_down()
         crawler.click_all_reviews()
         crawler.click_view_alert_page()
@@ -99,9 +99,26 @@ class Main:
             df_info.to_csv(os.path.join('outputs', f'tripadvisor_{hotel}_{present_date}.csv'), index=False)
             crawler.quit()
 
+    def googlestore_crawling(self):
+        for app, url in self.config['google_store'].items():
+            print(app, url)
+            crawler = GoogleStoreCrawler.Crawler(wait_time=3)
+            crawler.open(url=url, driver_path=self.driver_path)
+            crawler.click_all_reviews()
+            crawler.scroll_down(scroll_cnt=5)
+            reviews_info = crawler.get_info()
+            time.sleep(10)
+            # df_info = pd.DataFrame(reviews_info)
+            # print(df_info.head(), '\n')
+            # print(df_info.info())
+            # present_date = datetime.datetime.now().strftime('%Y%m%d')
+            # df_info.to_csv(os.path.join('outputs', f'googlestore_{app}_{present_date}.csv'), index=False)
+            # crawler.quit()
+
 
 if __name__ == '__main__':
     excute = Main()
     # excute.interpark_crawling()
     # excute.steam_crawling()
-    excute.tripadvisor_crawling()
+    # excute.tripadvisor_crawling()
+    excute.googlestore_crawling()
