@@ -1,10 +1,27 @@
-chromedriver_path: "/Users/macrent/PycharmProject/ReviewCrawler/chromedriver"
+chromedriver_path: "/Users/limkaram/PycharmProject/ReviewCrawler/chromedriver"
 chrome_path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 
 interpark:
-#  jeju_shilla: https://travel.interpark.com/checkinnow/goods/GIM000041892?startdate=20220105&enddate=20220106&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
+  jeju_shilla: https://travel.interpark.com/checkinnow/goods/GIM000041892?startdate=20220105&enddate=20220106&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
   jeju_lotte: https://travel.interpark.com/checkinnow/goods/GIM009000092?startdate=20220104&enddate=20220105&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
-#  annex: https://travel.interpark.com/checkinnow/goods/GIM015000462?startdate=20210817&enddate=20210818&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
-#  podo: https://travel.interpark.com/checkinnow/goods/GIM013000574?startdate=20210913&enddate=20210914&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
+  annex: https://travel.interpark.com/checkinnow/goods/GIM015000462?startdate=20210817&enddate=20210818&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
+  podo: https://travel.interpark.com/checkinnow/goods/GIM013000574?startdate=20210913&enddate=20210914&roomOptions=0%5E2%5E0%5E&npprmaxsort=min
 steam:
   battlegrounds: https://store.steampowered.com/app/578080/PUBG_BATTLEGROUNDS/
+tripadvisor:
+  imperial_palace_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d306105-Reviews-Imperial_Palace_Seoul-Seoul.html
+  lotte_hotel_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d306130-Reviews-LOTTE_HOTEL_SEOUL-Seoul.html
+  four_seasons_hotel_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d8587847-Reviews-Four_Seasons_Hotel_Seoul-Seoul.html
+  westin_josun_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d301815-Reviews-The_Westin_Josun_Seoul-Seoul.html
+  conrad_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d3477158-Reviews-Conrad_Seoul-Seoul.html
+  millennium_hilton_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d306132-Reviews-Millennium_Hilton_Seoul-Seoul.html
+  novotel_ambassador_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d299536-Reviews-Novotel_Ambassador_Seoul_Gangnam-Seoul.html
+  grand_walkerhill_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d301817-Reviews-GRAND_WALKERHILL_Seoul-Seoul.html
+  vista_walkerhill_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d500996-Reviews-Vista_Walkerhill_Seoul-Seoul.html
+  grand_hyatt_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d306115-Reviews-Grand_Hyatt_Seoul_Hotel-Seoul.html
+  signiel_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d12310284-Reviews-Signiel_Seoul-Seoul.html
+  park_hyatt_seoul: https://www.tripadvisor.co.kr/Hotel_Review-g294197-d555275-Reviews-Park_Hyatt_Seoul-Seoul.html
+  maison_glad: https://www.tripadvisor.co.kr/Hotel_Review-g297885-d455471-Reviews-Maison_Glad_Jeju-Jeju_Jeju_Island.html
+  ramada_plaza: https://www.tripadvisor.co.kr/Hotel_Review-g297885-d306058-Reviews-Ramada_Plaza_Jeju-Jeju_Jeju_Island.html
+  lotte_city: https://www.tripadvisor.co.kr/Hotel_Review-g297885-d6375295-Reviews-Lotte_City_Hotels_Jeju-Jeju_Jeju_Island.html
+  shilla_stay: https://www.tripadvisor.co.kr/Hotel_Review-g297885-d7679225-Reviews-Shilla_Stay_Jeju-Jeju_Jeju_Island.html

@@ -1,8 +1,7 @@
 import os
 import yaml
-from crawlers import InterparkCrawler, SteamCrawler
+from crawlers import InterparkCrawler, TripadvisorCrawler, SteamCrawler
 import pandas as pd
-import numpy as np
 import time
 import datetime
 
@@ -17,7 +16,7 @@ class Main:
         self.driver_path = self.config['chromedriver_path']
 
     def interpark_crawling(self):
-        for hotel, url in self.config['interpark'].items():
+        for hotel, url in self.config['tripadvisor'].items():
             print(f'[{hotel}] crawling start!!!')
             crawler = InterparkCrawler.Crawler(wait_time=3)
             crawler.open(url=url, driver_path=self.driver_path)
@@ -63,8 +62,46 @@ class Main:
         df.to_csv(os.path.join('outputs', f'steam_battlegrounds_{present_date}.csv'), index=False)
         time.sleep(60)
 
+    def tripadvisor_crawling(self):
+        result = {'reviews': [], 'scores': []}
+
+        for hotel, url in self.config['tripadvisor'].items():
+            print(f'hotel name : {hotel}')
+            print(f'url : {url}\n')
+            crawler = TripadvisorCrawler.Crawler(wait_time=3)
+            crawler.open(url=url, driver_path=self.driver_path)
+            all_reviews_num = crawler.all_reviews_num
+            complete_reviews_num = 0
+
+            while complete_reviews_num < all_reviews_num:
+                each_page_info = crawler.get_info()
+                reviews, scores = each_page_info['reviews'], each_page_info['scores']
+                result['reviews'].extend(reviews)
+                result['scores'].extend(scores)
+                complete_reviews_num += len(reviews)
+                processing_ratio = 100 * (complete_reviews_num / all_reviews_num)
+                print(f'[{complete_reviews_num}/{all_reviews_num}({processing_ratio:.1f}%)]')
+                print(reviews)
+                print(scores)
+                print('')
+                try:
+                    crawler.click_next()
+                except Exception as e:
+                    print(e)
+                    break
+                time.sleep(2)
+
+            df_info = pd.DataFrame(result)
+            print(df_info.head())
+            print(df_info.info())
+            print(df_info.scores.value_counts())
+            present_date = datetime.datetime.now().strftime('%Y%m%d')
+            df_info.to_csv(os.path.join('outputs', f'tripadvisor_{hotel}_{present_date}.csv'), index=False)
+            crawler.quit()
+
 
 if __name__ == '__main__':
     excute = Main()
-    excute.interpark_crawling()
+    # excute.interpark_crawling()
     # excute.steam_crawling()
+    excute.tripadvisor_crawling()
