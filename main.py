@@ -1,6 +1,6 @@
 import os
 import yaml
-from crawlers import InterparkCrawler, TripadvisorCrawler, SteamCrawler, GoogleStoreCrawler
+from crawlers import InterparkCrawler, TripadvisorCrawler, SteamCrawler, GoogleStoreCrawler, YogiyoCrawler
 import pandas as pd
 import time
 import datetime
@@ -114,10 +114,20 @@ class Main:
             time.sleep(15)
             crawler.quit()
 
+    def yogiyo_crawling(self):
+        for restaurant, url in self.config['yogiyo'].items():
+            print(restaurant, url)
+            crawler = YogiyoCrawler.Crawler(wait_time=3)
+            crawler.open(url=url, driver_path=self.driver_path)
+            crawler.click_clean_reviews_bar()
+            time.sleep(15)
+            break
+
 
 if __name__ == '__main__':
     excute = Main()
     # excute.interpark_crawling()
     # excute.steam_crawling()
     # excute.tripadvisor_crawling()
-    excute.googlestore_crawling()
+    # excute.googlestore_crawling()
+    excute.yogiyo_crawling()
