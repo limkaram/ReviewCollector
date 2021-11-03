@@ -23,8 +23,7 @@ class Crawler:
 
     def open(self, url: str, driver_path: str):
         if platform.system().lower().startswith('window'):
-            subprocess.Popen(
-                r'{} --remote-debugging-port=9222 --user-data-dir="C:\chrometemp"'.format(self.chrome_path))
+            subprocess.Popen(r'{} --remote-debugging-port=9222 --user-data-dir="C:\chrometemp"'.format(self.chrome_path))
             option = Options()
             option.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
             self.driver = webdriver.Chrome(driver_path, options=option)

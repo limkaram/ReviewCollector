@@ -4,12 +4,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 import subprocess
 import yaml
 import os
 import time
 import platform
+import re
+from pprint import pprint
 
 
 class Crawler:
@@ -36,45 +39,41 @@ class Crawler:
     def click_all_reviews(self):
         self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#fcxH9b > div.WpDbMd > c-wiz > div > div.ZfcPIb > div > div > main > div > div.W4P4ne > div.XnFhVd > div > span'))).click()
 
-    def get_info(self):
+    def get_info(self, scroll_cnt: int):
         result = {'reviews': [], 'scores': []}
+        container = set()
 
-        html_source = self.driver.page_source
-        soup = BeautifulSoup(html_source, 'html.parser')
-        print(soup)
-
-
-        # reviews_info = self.driver.find_elements_by_xpath('//*[@jsname="fk8dgd"]//div[@class="d15Mdf bAhLNe"]')
-        # reviews_info = self.driver.find_elements_by_xpath('//*[@id="fcxH9b"]/div[4]/c-wiz[3]/div/div[2]/div/div/main/div/div[1]')
-        # reviews_info = self.driver.find_elements_by_class_name('UD7Dzf')
-        # print(len(reviews_info))
-        # print(reviews_info[:3])
-
-        # for info in reviews_info:
-        #     soup = BeautifulSoup(info.get_attribute('innerHTML'), 'html.parser')
-        #     score = int(soup.find('div', role='img').get('aria-label').replace('별표 5개 만점에', '').replace('개를 받았습니다.', '').strip())
-        #     review = soup.find('span', jsname='bN97Pc').text
-        #
-        #     if not review:
-        #         review = soup.find('span', jsname='fbQN7e').text
-        #     print(review)
-        #
-        #     result['reviews'].append(review)
-        #     result['scores'].append(score)
-        #     # print(f'[score {score}] {review}')
-        #
-        #     return result
-
-    def scroll_down(self, scroll_cnt):
         for _ in range(scroll_cnt):
-            self.driver.find_element_by_tag_name('body').send_keys(Keys.PAGE_DOWN)
-            time.sleep(0.2)
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
 
-            try:
-                more_button = self.driver.find_element_by_css_selector('#fcxH9b > div.WpDbMd > c-wiz:nth-child(4) > div > div.ZfcPIb > div > div > main > div > div.W4P4ne > div:nth-child(2) > div.PFAhAf > div > span')
-                more_button.click()
-            except Exception:
-                continue
+            more_button = self.driver.find_elements_by_xpath(
+                '//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div/main/div/div[1]/div[2]/div[2]/div')
+
+            if more_button:
+                more_button[0].click()
+
+            html_source = self.driver.page_source
+            soup = BeautifulSoup(html_source, 'html.parser')
+            info_boxes = soup.find_all('div', jscontroller='H6eOGe')
+
+            for i, info_box in enumerate(info_boxes):
+                review = info_box.find('span', jsname='bN97Pc').text
+                score_text = info_box.find('div', role='img').get('aria-label')
+                score = self._cleaning_score_text(score_text)
+                container.add((score, review))
+            print(container)
+
+        for score, review in list(container):
+            result['reviews'].append(review)
+            result['scores'].append(score)
+
+        return result
+
+    @staticmethod
+    def _cleaning_score_text(score_text: str):
+        # example string : 별표 5개 만점에 1개를 받았습니다.
+        return int(re.match(r'별표 [0-9]개 만점에 ([0-9])개를 받았습니다.', score_text).group(1))
 
     def quit(self):
         self.driver.quit()

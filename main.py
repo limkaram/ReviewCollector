@@ -105,15 +105,14 @@ class Main:
             crawler = GoogleStoreCrawler.Crawler(wait_time=3)
             crawler.open(url=url, driver_path=self.driver_path)
             crawler.click_all_reviews()
-            crawler.scroll_down(scroll_cnt=5)
-            reviews_info = crawler.get_info()
-            time.sleep(10)
-            # df_info = pd.DataFrame(reviews_info)
-            # print(df_info.head(), '\n')
-            # print(df_info.info())
-            # present_date = datetime.datetime.now().strftime('%Y%m%d')
-            # df_info.to_csv(os.path.join('outputs', f'googlestore_{app}_{present_date}.csv'), index=False)
-            # crawler.quit()
+            reviews_info = crawler.get_info(scroll_cnt=100)
+            df_info = pd.DataFrame(reviews_info)
+            print(df_info.head(), '\n')
+            print(df_info.info())
+            present_date = datetime.datetime.now().strftime('%Y%m%d')
+            df_info.to_csv(os.path.join('outputs', f'googlestore_{app}_{present_date}.csv'), index=False)
+            time.sleep(15)
+            crawler.quit()
 
 
 if __name__ == '__main__':
