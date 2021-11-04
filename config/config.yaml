@@ -1,4 +1,4 @@
-chromedriver_path: /Users/limkaram/PycharmProject/ReviewCrawler/chromedriver
+chromedriver_path: C:\Users\LIMKARAM\PycharmProjects\ReviewCrawler\chromedriver.exe
 chrome_path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 
 interpark:
@@ -29,4 +29,6 @@ google_store:
   instagram: https://play.google.com/store/apps/details?id=com.instagram.android
   youtube: https://play.google.com/store/apps/details?id=com.google.android.youtube
 yogiyo:
-  chugatgip_hangwoon: https://www.yogiyo.co.kr/mobile/?gclid=Cj0KCQjww4OMBhCUARIsAILndv4PZmTz6sIxIjUdGT78pQ1YfZspv_iEKuKyeFNdrL2YcbvBLc2j4xkaAiFMEALw_wcB#/232718/
+  chugajip_hangwoon: https://www.yogiyo.co.kr/mobile/?gclid=Cj0KCQjww4OMBhCUARIsAILndv4PZmTz6sIxIjUdGT78pQ1YfZspv_iEKuKyeFNdrL2YcbvBLc2j4xkaAiFMEALw_wcB#/232718/
+  honbabhonsool_gwanak: https://www.yogiyo.co.kr/mobile/#/260477/
+  hwajungjokbal: https://www.yogiyo.co.kr/mobile/#/60509/

@@ -1,6 +1,7 @@
 import os
 import yaml
 from crawlers import InterparkCrawler, TripadvisorCrawler, SteamCrawler, GoogleStoreCrawler, YogiyoCrawler
+from selenium.common.exceptions import TimeoutException
 import pandas as pd
 import time
 import datetime
@@ -14,6 +15,7 @@ class Main:
         with open(os.path.join(PROJECT_ROOT_PATH, 'config', 'config.yaml')) as f:
             self.config = yaml.load(f, Loader=yaml.FullLoader)
         self.driver_path = self.config['chromedriver_path']
+        self.present_date = datetime.datetime.now().strftime('%Y%m%d')
 
     def interpark_crawling(self):
         for hotel, url in self.config['tripadvisor'].items():
@@ -22,7 +24,7 @@ class Main:
             crawler.open(url=url, driver_path=self.driver_path)
             crawler.click_pagemovebar(point='left')
 
-            df_info = pd.DataFrame()
+            df = pd.DataFrame()
             all_reviews_num = crawler.all_reviews_num
             complete_reviews_num = 0
 
@@ -36,12 +38,14 @@ class Main:
 
                 print(f'[page {page}] [{complete_reviews_num}/{all_reviews_num}({processing_ratio:.1f}%)]')
                 print(info['date'], '\n', info['score'], '\n', info['score_category'], '\n', info['review'], '\n')
-                df_info = df_info.append(pd.DataFrame(info))
+                df = df.append(pd.DataFrame(info))
             crawler.quit()
-            df_info = df_info.sort_values(by='date').reset_index(drop=True)
-            print(df_info.info(), '\n')
-            present_date = datetime.datetime.now().strftime('%Y%m%d')
-            df_info.to_csv(os.path.join('outputs', f'interpark_{hotel}_{present_date}.csv'), index=False)
+            df = df.sort_values(by='date').reset_index(drop=True)
+            df.to_csv(os.path.join('outputs', f'interpark_{hotel}_{self.present_date}.csv'), index=False)
+            crawler.quit()
+            print(df.head(), '\n')
+            print(df.info(), '\n')
+            print(df.scores.value_counts())
 
     def steam_crawling(self):
         url = self.config['steam']['battlegrounds']
@@ -55,12 +59,11 @@ class Main:
         crawler.scroll_down(scroll_down=10000)
         data = crawler.get_info()
         df = pd.DataFrame(data)
-        print(df.head())
-        print('')
-        print(df.info())
-        present_date = datetime.datetime.now().strftime('%Y%m%d')
-        df.to_csv(os.path.join('outputs', f'steam_battlegrounds_{present_date}.csv'), index=False)
-        time.sleep(60)
+        df.to_csv(os.path.join('outputs', f'steam_battlegrounds_{self.present_date}.csv'), index=False)
+        crawler.quit()
+        print(df.head(), '\n')
+        print(df.info(), '\n')
+        print(df.scores.value_counts())
 
     def tripadvisor_crawling(self):
         result = {'reviews': [], 'scores': []}
@@ -91,13 +94,12 @@ class Main:
                     break
                 time.sleep(2)
 
-            df_info = pd.DataFrame(result)
-            print(df_info.head())
-            print(df_info.info())
-            print(df_info.scores.value_counts())
-            present_date = datetime.datetime.now().strftime('%Y%m%d')
-            df_info.to_csv(os.path.join('outputs', f'tripadvisor_{hotel}_{present_date}.csv'), index=False)
+            df = pd.DataFrame(result)
+            df.to_csv(os.path.join('outputs', f'tripadvisor_{hotel}_{self.present_date}.csv'), index=False)
             crawler.quit()
+            print(df.head(), '\n')
+            print(df.info(), '\n')
+            print(df.scores.value_counts())
 
     def googlestore_crawling(self):
         for app, url in self.config['google_store'].items():
@@ -106,22 +108,32 @@ class Main:
             crawler.open(url=url, driver_path=self.driver_path)
             crawler.click_all_reviews()
             reviews_info = crawler.get_info(scroll_cnt=100)
-            df_info = pd.DataFrame(reviews_info)
-            print(df_info.head(), '\n')
-            print(df_info.info())
-            present_date = datetime.datetime.now().strftime('%Y%m%d')
-            df_info.to_csv(os.path.join('outputs', f'googlestore_{app}_{present_date}.csv'), index=False)
-            time.sleep(15)
+            df = pd.DataFrame(reviews_info)
+            df.to_csv(os.path.join('outputs', f'googlestore_{app}_{self.present_date}.csv'), index=False)
             crawler.quit()
+            print(df.head(), '\n')
+            print(df.info(), '\n')
+            print(df.scores.value_counts())
 
     def yogiyo_crawling(self):
         for restaurant, url in self.config['yogiyo'].items():
             print(restaurant, url)
             crawler = YogiyoCrawler.Crawler(wait_time=3)
             crawler.open(url=url, driver_path=self.driver_path)
+            time.sleep(2)
             crawler.click_clean_reviews_bar()
-            time.sleep(15)
-            break
+            try:
+                crawler.click_more_show(click_cnt=200, infinity=False)
+            except TimeoutException as e:
+                print(e)
+            finally:
+                reviews_info = crawler.get_info()
+                df = pd.DataFrame(reviews_info)
+                df.to_csv(os.path.join('outputs', f'yogiyo_{restaurant}_{self.present_date}.csv'), index=False)
+                crawler.quit()
+                print(df.head(), '\n')
+                print(df.info(), '\n')
+                print(df.scores.value_counts())
 
 
 if __name__ == '__main__':

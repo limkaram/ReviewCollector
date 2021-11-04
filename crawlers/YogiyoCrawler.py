@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -38,44 +39,41 @@ class Crawler:
     def click_clean_reviews_bar(self):
         self.wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="content"]/div[2]/div[1]/ul/li[2]/a'))).click()
 
-    def click_all_reviews(self):
-        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#fcxH9b > div.WpDbMd > c-wiz > div > div.ZfcPIb > div > div > main > div > div.W4P4ne > div.XnFhVd > div > span'))).click()
+    def click_more_show(self, click_cnt: int, infinity: bool):
+        prev_height = self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
 
-    def get_info(self, scroll_cnt: int):
+        if infinity:
+            while True:
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+                self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#review > li.list-group-item.btn-more > a > span'))).click()
+                time.sleep(2)
+
+                curr_height = self.driver.execute_script("return document.body.scrollHeight")
+
+                if curr_height == prev_height:
+                    break
+
+                prev_height = curr_height
+        else:
+            for _ in range(click_cnt):
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+                self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#review > li.list-group-item.btn-more > a > span'))).click()
+                time.sleep(2)
+
+    def get_info(self):
         result = {'reviews': [], 'scores': []}
-        container = set()
+        html_source = self.driver.page_source
 
-        for _ in range(scroll_cnt):
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)
+        soup = BeautifulSoup(html_source, 'html.parser')
+        info_boxes = soup.find_all('li', class_='list-group-item star-point ng-scope')
 
-            more_button = self.driver.find_elements_by_xpath(
-                '//*[@id="fcxH9b"]/div[4]/c-wiz[2]/div/div[2]/div/div/main/div/div[1]/div[2]/div[2]/div')
-
-            if more_button:
-                more_button[0].click()
-
-            html_source = self.driver.page_source
-            soup = BeautifulSoup(html_source, 'html.parser')
-            info_boxes = soup.find_all('div', jscontroller='H6eOGe')
-
-            for i, info_box in enumerate(info_boxes):
-                review = info_box.find('span', jsname='bN97Pc').text
-                score_text = info_box.find('div', role='img').get('aria-label')
-                score = self._cleaning_score_text(score_text)
-                container.add((score, review))
-            print(container)
-
-        for score, review in list(container):
+        for info_box in info_boxes:
+            score = len(info_box.find_all('span', class_='full ng-scope'))
+            review = info_box.find('p', attrs={'ng-show': 'review.comment'}).text.replace('\n', ' ')
             result['reviews'].append(review)
             result['scores'].append(score)
 
         return result
-
-    @staticmethod
-    def _cleaning_score_text(score_text: str):
-        # example string : 별표 5개 만점에 1개를 받았습니다.
-        return int(re.match(r'별표 [0-9]개 만점에 ([0-9])개를 받았습니다.', score_text).group(1))
 
     def quit(self):
         self.driver.quit()
