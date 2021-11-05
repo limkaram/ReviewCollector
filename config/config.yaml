@@ -1,4 +1,5 @@
-chromedriver_path: C:\Users\LIMKARAM\PycharmProjects\ReviewCrawler\chromedriver.exe
+#chromedriver_path: C:\Users\LIMKARAM\PycharmProjects\ReviewCrawler\chromedriver.exe
+chromedriver_path: /Users/limkaram/PycharmProject/ReviewCrawler/chromedriver
 chrome_path: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
 
 interpark:
@@ -32,3 +33,10 @@ yogiyo:
   chugajip_hangwoon: https://www.yogiyo.co.kr/mobile/?gclid=Cj0KCQjww4OMBhCUARIsAILndv4PZmTz6sIxIjUdGT78pQ1YfZspv_iEKuKyeFNdrL2YcbvBLc2j4xkaAiFMEALw_wcB#/232718/
   honbabhonsool_gwanak: https://www.yogiyo.co.kr/mobile/#/260477/
   hwajungjokbal: https://www.yogiyo.co.kr/mobile/#/60509/
+  jaengbanzzazang: https://www.yogiyo.co.kr/mobile/?gclid=CjwKCAjwiY6MBhBqEiwARFSCPjn1oW3QtLhnPTNZmVcEN-cP3JfDbnKNLe5Ff8hQWs_yZutV4BASFRoCfhMQAvD_BwE#/229625/
+  samjupsal: https://www.yogiyo.co.kr/mobile/?gclid=CjwKCAjwiY6MBhBqEiwARFSCPjn1oW3QtLhnPTNZmVcEN-cP3JfDbnKNLe5Ff8hQWs_yZutV4BASFRoCfhMQAvD_BwE#/251836/
+  booldak: https://www.yogiyo.co.kr/mobile/?gclid=CjwKCAjwiY6MBhBqEiwARFSCPjn1oW3QtLhnPTNZmVcEN-cP3JfDbnKNLe5Ff8hQWs_yZutV4BASFRoCfhMQAvD_BwE#/19545/
+  gilshobab: https://www.yogiyo.co.kr/mobile/?gclid=CjwKCAjwiY6MBhBqEiwARFSCPrjgkTZX16FVplp5gckdM5-BcYpoqyLCKEExRD9SF20sMh2Bkr8XrBoCnNwQAvD_BwE#/261152/
+  dakdolitang: https://www.yogiyo.co.kr/mobile/?gclid=CjwKCAjwiY6MBhBqEiwARFSCPrjgkTZX16FVplp5gckdM5-BcYpoqyLCKEExRD9SF20sMh2Bkr8XrBoCnNwQAvD_BwE#/32395/
+  zzim: https://www.yogiyo.co.kr/mobile/?gclid=CjwKCAjwiY6MBhBqEiwARFSCPrjgkTZX16FVplp5gckdM5-BcYpoqyLCKEExRD9SF20sMh2Bkr8XrBoCnNwQAvD_BwE#/262315/
+  donggase: https://www.yogiyo.co.kr/mobile/?gclid=CjwKCAjwiY6MBhBqEiwARFSCPrjgkTZX16FVplp5gckdM5-BcYpoqyLCKEExRD9SF20sMh2Bkr8XrBoCnNwQAvD_BwE#/321409/
